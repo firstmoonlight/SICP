@@ -40,7 +40,7 @@
 (fixed-point (average-damp formula) 2.0) 
 ```
 
-结果显示，不带平均阻尼的计算使用了 41 步，另一方面，使用平均阻尼的计算只使用了 12 步，说明平均阻尼有助于计算快速收敛。
+结果显示，不带平均阻尼的计算使用了 35 步，另一方面，使用平均阻尼的计算只使用了 10 步，说明平均阻尼有助于计算快速收敛。
 ```
 Welcome to DrRacket, version 8.15 [cs].
 Language: sicp, with debugging; memory limit: 128 MB.
