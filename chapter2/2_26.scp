@@ -1,0 +1,27 @@
+#lang sicp
+
+(define (append list1 list2)
+  (if (null? list1)
+      list2
+      (cons (car list1) (append (cdr list1) list2))))
+
+(define x (list 1 2 3))
+(define y (list 4 5 6))
+
+(append x y)
+(cons x y)
+(list x y)
+
+#|
+因为list最后面还需要cons一个空列表,所以cons和list的结果不一样
+
+
+(cons '(1 2 3) '(4 5 6))
+= (cons (1 2 3) (4 5 6))
+= ((1 2 3) 4 5 6)
+
+(list '(1 2 3) '(4 5 6))
+= (cons '(1 2 3) (cons '(4 5 6) '()))
+= ((1 2 3) (4 5 6))
+
+|#

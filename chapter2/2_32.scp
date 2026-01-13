@@ -1,0 +1,24 @@
+#lang sicp
+
+(define (subsets s)
+  (if (null? s)
+      (list nil)
+      (let ((rest (subsets (cdr s))))
+        (append
+         rest
+         (map
+          (lambda (sub-rest)
+            (cons (car s) sub-rest))
+          rest)))))
+
+(subsets `(1 2 3))
+
+
+(define (enumerate-tree tree)
+  (cond ((null? tree) nil)
+        ((not (pair? tree)) tree)
+        (else (cons (enumerate-tree (car tree))
+                      (enumerate-tree (cdr tree))))))
+;(enumerate-tree (list 1 (list 2 (list 3 4)) 5))
+(enumerate-tree (list 1 2))
+;(1 2 3 4 5)

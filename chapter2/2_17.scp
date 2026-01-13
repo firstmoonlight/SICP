@@ -1,0 +1,10 @@
+#lang sicp
+
+(define (last-pair list)
+  (define (last-pair-helper pre_val list)
+    (if (null? list)
+        pre_val
+        (last-pair-helper (car list) (cdr list))))
+  (if (null? list)
+      nil
+      (last-pair-helper (car list) (cdr list))))

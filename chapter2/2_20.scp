@@ -1,0 +1,26 @@
+#lang racket
+
+(require racket/trace)  ; 导入trace模块
+
+(define (same-parity . w)
+  (define (same-even-odd x y)
+    (let ((modx (modulo  x 2))
+          (mody (modulo  y 2)))
+      (if (= modx mody)
+          (list y)
+          `())))
+  (define (same-parity-helper x w)
+    (if (null? w)
+        `()
+        (let ((cur (same-even-odd x (car w)))
+              (rest (same-parity-helper x (cdr w))))
+          (if (null? cur)
+               rest
+               (cons (car cur) rest)))))
+  (if (null? w)
+      `()
+      (cons (car w) (same-parity-helper (car w) (cdr w)))))
+
+
+(same-parity 1 2 3 4 5 6 7)
+(same-parity 2 3 4 5 6 7)

@@ -1,0 +1,22 @@
+#lang sicp
+
+(define (append list1 list2)
+  (if (null? list1)
+      list2
+      (cons (car list1) (append (cdr list1) list2))))
+
+(define (deep-reverse items)
+  (cond ((null? items) '())  ; 基本情况1:空列表
+        ((not (pair? items)) items)  ; 基本情况2:原子
+        (else
+         ;; 先深度反转cdr(剩余部分)
+         (let ((reversed-rest (deep-reverse (cdr items))))
+           ;; 然后深度反转car(当前元素),并添加到结果末尾
+           (append reversed-rest 
+                   (list (deep-reverse (car items))))))))
+
+
+(define x (list (list 1 2) (list 3 4)))
+x
+(define y (list 1 2))
+(deep-reverse x)

@@ -1,0 +1,31 @@
+#lang sicp
+
+(define (square x) (* x x))
+
+(define (square-list items)
+  (define (iter things answer)
+    (if (null? things)
+        answer
+        (iter (cdr things)
+              (cons (square (car things))
+                    answer))))
+  (iter items nil))
+
+#|
+这段会reverse的原因是因为我们将answer作为cons的第二个参数, 这就导致了我们计算的时候是从第一个原始开始, 但是进行cons的时候, 却是最后一个元素
+|#
+
+(define (square-list2 items)
+  (define (iter things answer)
+    (if (null? things)
+        answer
+        (iter (cdr things)
+              (cons answer
+                    (square (car things))))))
+  (iter items nil))
+#|
+这段同样有问题, 是因为我们的第一个元素是nil,因此进行cons的时候相当于两个list进行cons,因此最终得到的是嵌套的list
+|#
+
+(square-list (list 1 2 3 4))
+(square-list2 (list 1 2 3 4))

@@ -1,0 +1,35 @@
+#lang sicp
+
+(define (accumulate op initial sequence)
+  (if (null? sequence)
+      initial
+      (op (car sequence)
+          (accumulate op initial (cdr sequence)))))
+
+(define (accumulate-n op init seqs)
+  (if (null? (car seqs))
+      nil
+      (cons (accumulate op init (map car seqs))
+            (accumulate-n op init (map cdr seqs)))))
+(define (dot-product v w)
+  (accumulate + 0 (map * v w)))
+(define (matrix-*-vector m v)
+  (map (lambda (x) (dot-product v x)) m))
+
+(define (transpose mat)
+  (accumulate-n cons nil mat))
+
+(define (matrix-*-matrix m n)
+  (let ((cols (transpose n)))
+    (map (lambda (m-row)
+           (map (lambda (n-col)
+                  (dot-product m-row n-col))
+                cols))
+           m)))
+
+(define mat1 `((1 2 3) (4 5 6)))
+(define mat2 `((1 2) (3 4)))
+(define mat3 `((5 6) (7 8)))
+(matrix-*-vector mat1 `(1 1 1))
+(transpose mat1)
+(matrix-*-matrix mat2 mat3)

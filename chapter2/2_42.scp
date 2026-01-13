@@ -1,0 +1,70 @@
+#lang sicp
+
+(define (append list1 list2)
+  (if (null? list1)
+      list2
+      (cons (car list1) (append (cdr list1) list2))))
+
+(define (accumulate op initial sequence)
+  (if (null? sequence)
+      initial
+      (op (car sequence)
+          (accumulate op initial (cdr sequence)))))
+   
+(define (flatmap proc seq)
+  (accumulate append nil (map proc seq)))
+
+(define (enumerate-interval low high)
+  (if (> low high)
+      nil
+      (cons low (enumerate-interval (+ 1 low) high))))
+
+(define (filter predicate seq)
+  (cond ((null? seq) nil)
+        ((predicate (car seq))
+         (cons (car seq) (filter predicate (cdr seq))))
+        (else
+         (filter predicate (cdr seq)))))
+       
+
+;empty-borad
+(define empty-board  nil)
+
+(define (safe? k-cols positions)
+  (define (list-ref i seq)
+    (if (= 1 i)
+        (car seq)
+        (list-ref (- i 1) (cdr seq))))
+  (define (conflict? kth-row i-col positions)
+    (if (= i-col k-cols)
+        #f
+        (let ((ith-row (car positions)))
+          (or
+           (= kth-row  ith-row)
+           (= (+ k-cols kth-row) (+ i-col ith-row))
+           (= (- k-cols kth-row) (- i-col ith-row))
+           (conflict? kth-row (+ i-col 1) (cdr positions))))))
+  (let ((kth-row (list-ref k-cols positions)))
+    (not (conflict? kth-row 1 positions))))
+
+;(safe? 1 `(1))
+
+(define (queens board-size)
+  (define (adjoin-position new-row kth-col rest-of-queens)
+    (append rest-of-queens (list new-row)))
+  (define (queen-cols k)
+    (if (= k 0)
+        (list empty-board)
+        (filter
+         (lambda (positions) (safe? k positions))
+         (flatmap
+          (lambda (rest-of-queens)
+            (map (lambda (new-row)
+                   (adjoin-position
+                    new-row k rest-of-queens))
+                 (enumerate-interval 1 board-size)))
+          (queen-cols (- k 1))))))
+  (queen-cols board-size))
+
+(queens 8)
+;safe?
