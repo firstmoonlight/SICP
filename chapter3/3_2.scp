@@ -1,0 +1,21 @@
+#lang sicp
+
+(define (make-monitored f)
+  (let ((count 0))
+    (define (reset) (set! count 0))
+    (define (how-many) count)
+    (define (dispatch m)
+      (cond ((eq? m 'how-many-calls?) (how-many))
+            ((eq? m 'reset-count) (reset))
+            (else 
+             (set! count (+ count 1))
+             (f m))))
+    dispatch))
+
+(define s (make-monitored sqrt))
+(s 100)           ; 10
+(s 25)            ; 5
+(s 'how-many-calls?)  ; 2
+(s 'reset-count)
+(s 36)            ; 6
+(s 'how-many-calls?)  ; 1
